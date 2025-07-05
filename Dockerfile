@@ -1,6 +1,9 @@
 
 FROM node:18-alpine
 
+# Install curl for health checks
+RUN apk add --no-cache curl
+
 # Set working directory
 WORKDIR /app
 
@@ -8,7 +11,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm ci --only=production && npm cache clean --force
 
 # Copy application code
 COPY . .
@@ -19,9 +22,9 @@ RUN mkdir -p /app/auth && chmod 755 /app/auth
 # Expose port (Render uses dynamic ports)
 EXPOSE $PORT
 
-# Health check
+# Health check with proper port variable
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:$PORT/health || exit 1
+  CMD curl -f http://0.0.0.0:${PORT:-5000}/health || exit 1
 
 # Start the application
 CMD ["node", "index.js"]
