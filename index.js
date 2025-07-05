@@ -365,10 +365,8 @@ startBot().catch((err) => {
     process.exit(1);
 });
 
-// Web server for deployment platforms (Replit, Heroku, Glitch, etc.)
+// Keep-alive HTTP server for platforms like Render
 const PORT = process.env.PORT || 5000;
-const HOST = '0.0.0.0';
-
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 
         'Content-Type': 'text/html',
@@ -432,8 +430,8 @@ const server = http.createServer((req, res) => {
     `);
 });
 
-server.listen(PORT, HOST, () => {
-    console.log(`🌐 HTTP server running on ${HOST}:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`🌐 HTTP server running on ${PORT}:${PORT}`);
     console.log(`🔗 Access: http://localhost:${PORT}`);
 });
 
