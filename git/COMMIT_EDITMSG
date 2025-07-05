@@ -1,0 +1,14 @@
+Assistant checkpoint: Add group mute/unmute functionality
+
+Assistant generated file changes:
+- command/mute.js: Add group mute/unmute command
+- command/menu.js: Add mute command to menu
+
+---
+
+User prompt:
+
+group mute unmute funtion add
+
+Replit-Commit-Author: Assistant
+Replit-Commit-Session-Id: 2db2b60f-4f71-4094-82bd-3d512b2b0d5b
