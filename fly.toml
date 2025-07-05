@@ -1,5 +1,5 @@
 toml
-app = "basic-mini-bot"
+app = "dark-crime-whatsapp-bot"
 
 [build]
   dockerfile = "Dockerfile"
@@ -8,12 +8,22 @@ app = "basic-mini-bot"
   NODE_ENV = "production"
 
 [[services]]
-  internal_port = 8080
+  internal_port = 5000
   protocol = "tcp"
-
+  
   [[services.ports]]
     handlers = ["http"]
     port = 80
+    
+  [[services.ports]]
+    handlers = ["http"]
+    port = 443
+
+[processes]
+  app = "node index.js"
+
+[deploy]
+  strategy = "rolling"
 
 [mounts]
   source = "auth_data"
