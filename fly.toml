@@ -1,0 +1,20 @@
+toml
+app = "basic-mini-bot"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+[mounts]
+  source = "auth_data"
+  destination = "/app/auth"
