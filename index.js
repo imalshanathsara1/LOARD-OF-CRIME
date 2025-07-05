@@ -368,6 +368,20 @@ startBot().catch((err) => {
 // Keep-alive HTTP server for platforms like Render
 const PORT = process.env.PORT || 5000;
 const server = http.createServer((req, res) => {
+    // Handle health check endpoint
+    if (req.url === '/health') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+            status: 'healthy',
+            uptime: process.uptime(),
+            memory: process.memoryUsage(),
+            platform: process.platform,
+            node_version: process.version,
+            timestamp: new Date().toISOString()
+        }));
+        return;
+    }
+
     res.writeHead(200, { 
         'Content-Type': 'text/html',
         'Access-Control-Allow-Origin': '*',
@@ -431,22 +445,9 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`🌐 HTTP server running on ${PORT}:${PORT}`);
+    console.log(`🌐 HTTP server running on 0.0.0.0:${PORT}`);
     console.log(`🔗 Access: http://localhost:${PORT}`);
-});
-
-// Health check endpoint
-server.on('request', (req, res) => {
-    if (req.url === '/health') {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({
-            status: 'healthy',
-            uptime: process.uptime(),
-            memory: process.memoryUsage(),
-            platform: process.platform,
-            node_version: process.version
-        }));
-    }
+    console.log(`💊 Health check: http://localhost:${PORT}/health`);
 });
 
 // Keep alive function for some platforms
